@@ -76,6 +76,11 @@ def wrap_function(fun: Callable, injector: Injector) -> Callable:
 
 def wrap_class_based_view(fun: Callable, injector: Injector) -> Callable:
     cls = cast(Any, fun).view_class
+
+    # this a decorator
+    if hasattr(fun, '__wrapped__'):
+        fun = fun.__wrapped__
+
     name = fun.__name__
 
     closure_contents = (c.cell_contents for c in cast(Any, fun).__closure__)
